@@ -60,6 +60,9 @@ def scalarMultVec(scalar,vector):
   A = [ ]
   #A is an empty list.
   for i in range(len(vector)):
+    if type(vector[i]) != int and type(vector[i]) != float and type(vector[i]) != complex:
+      print('error')
+      return None
     #For the length of the vector.
     A.append(vector[i] * scalar)
     #For each element in length i, multiply by the scalar.
@@ -111,7 +114,58 @@ def modGramSchmidt(A):
       #
   return [q, r]
 
-A = [[1,0,1],[2,1,0]]
-q, r = modGramSchmidt(A)
-print(q)
-print(r)
+qr = modGramSchimdt(A)
+
+def transposeMatVec(q,y):
+  '''
+  This function takes the transpose of the matrix q and by the vector y. This takes the matrix q and switches the rows and columns. Then, this takes the matrix q and multiples by vector y to get a new vector C.
+  '''
+  C = []
+  #This is the empty set C that is being solved for
+  for i in range(len(q)):
+    for j in range(len(q[0])):
+      if type(q[i][j]) != int and type(q[i][j]) != float and type(q[i][j]) != complex:
+        print('error')
+        return None
+  #This iterates the block executing the length of the matrix.
+    total = 0
+    for j in range(len(y)):
+      if type(y[j]) != int and type(y[j]) != float and type(y[j]) != complex:
+        print('error')
+        return None
+      total = total + (q[j][i] * y[j])
+      #This is multiplying the transpose matrix and vector toghether and adding the total to the product.
+    C.append(total)
+    #This adds the product together.
+  return C
+  #This is returning the data to make the vector C
+
+C = transposeMatVec(QR[0],y)
+
+def vecDiviUpperTriMat(C,r):
+  '''
+  This takes the matrix r and the answer C to solve for x. This takes the reverse itiration of r. For j, this starts at the element i + 1 and goes to length C. This takes the element in C and subtracts the product of the matrix times the element in C. Then, divide the answer by the diagonal of r. This then returns the vector x that solves the equation rx=C.
+  '''
+  x = C
+  #Defining x as C.
+  for i in reversed(range(len(r))):
+    for j in range(r[0]):
+      if type(r[i][j]) != int and type(r[i][j]) != float and type(r[i][j]) != complex:
+        print('error')
+        return None
+  #This iterates the list backwards.
+    for j in range(i + 1, len(C)):
+      if type(C[j]) != int and type(C[j]) != float and type(C[j]) != complex:
+        print('error')
+        return None
+      x[i] = x[i] - (r[i][j] * x[j])
+      #Matrix r multiplied by C and then vector C subtracted by the product.
+    x[i] = x[i] / r[i][i]
+    #Takes result from the previous answer and divides by the diagonal of r.
+return x
+#returns the answer x.
+
+
+A = [[1,1,1,1,1,1,1,1,1,1],[.55,.6,.65,.7,.75,.8,.85,.9,.95,1],[.3025,.36,.4225,.49,.5625,.64,.7225,.81,.9025,1],[.166375,.216,.274625,.343,.421875,.512,.614125,.729,..857375,1]]
+y = [1.102,1.099,1.017,1.111,1.117,1.152,1.265,1.380,1.575,1.857]
+print(vecDiviUpperTriMat(C,r))
